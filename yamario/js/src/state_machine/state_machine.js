@@ -58,8 +58,6 @@ export default class StateMachine {
 
         this.isSwitchingState = true;
 
-        console.log(`[StateMachine (${this.id})] change from ${this.currentState?.name} to ${name}`);
-
         if (this.currentState && this.currentState.onExit) {
             this.currentState.onExit();
         }

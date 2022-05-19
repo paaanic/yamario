@@ -73,7 +73,6 @@ export default class HUDScene extends Phaser.Scene {
             'marioFont', `x${this.registry.get('coinsCount')}`
         );
         this.coinsCount.setOrigin(0, 0.5);
-        // this.coinsCount.setTint('0xffc0cb');
         this.coinsWidget
             .add(coinsIcon)
             .add(this.coinsCount)

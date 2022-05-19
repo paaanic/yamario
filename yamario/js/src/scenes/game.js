@@ -43,6 +43,7 @@ export default class GameScene extends Phaser.Scene {
         this.jumpBoosters = this.physics.add.group();
         this.enemyBorders = this.physics.add.group();
         this.platformBorders = this.physics.add.group();
+        this.playerColliders = this.physics.add.group();
 
         this.objectsLayer = map.getObjectLayer('objects');
         this.objectsLayer.objects.forEach(objData => {
@@ -79,6 +80,14 @@ export default class GameScene extends Phaser.Scene {
                 case 'jump-booster-spawn':
                     new JumpBooster(this, x, y);
                     break;
+                case 'collider':
+                    let collider = this.add.rectangle(x, y, objData.width, objData.height);
+                    this.playerColliders.add(collider);
+                    collider
+                        .setOrigin(0)
+                        .body
+                            .setImmovable()
+                            .setAllowGravity(false);
                 default:
                     break;
             }
@@ -86,6 +95,7 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.physics.add.collider(this.player, this.groundLayer, () => {}, null, this);
+        this.physics.add.collider(this.player, this.playerColliders, () => {}, null, this);
         this.physics.add.collider(this.enemies, this.groundLayer, () => {}, null, this);
         this.physics.add.collider(
             this.movingPlatforms, this.platformBorders, (platform, border) => {
@@ -93,7 +103,7 @@ export default class GameScene extends Phaser.Scene {
                 platform.body.velocity.y *= -1;
             }, null, this
         );
-
+        
         this.colliders = {
             playerVsJumpBoosters: this.physics.add.collider(
                 this.player, this.jumpBoosters, this.playerVsJumpBooster, null, this
@@ -136,7 +146,10 @@ export default class GameScene extends Phaser.Scene {
             if (--this.registry.values.lifesCount === 0) {
                 this.gameOver();
             }
-
+            
+            this.bgm.pause();
+            this.sfx.lostLife.play();
+            this.sfx.lostLife.on('complete', () => this.bgm.resume());
             events.emit('player:damagedBy:enemy');
             this.time.delayedCall(
                 1000, () => {this.colliders.playerVsEnemies.active = true;}, null
