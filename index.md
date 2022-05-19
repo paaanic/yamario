@@ -1,6 +1,6 @@
 ---
 layout: default
-title: index
+title: yamario
 youtube_id: DpmfwWbonVY
 ---
 
