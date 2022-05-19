@@ -32,3 +32,7 @@ while (window_.isOpen()) {
 {% include youtube_player.html id=page.youtube_id %}
 
 <br/><br/>
+
+### Or play it right away
+
+[Let's play!](/play)
