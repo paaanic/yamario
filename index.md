@@ -35,4 +35,4 @@ while (window_.isOpen()) {
 
 ### Or play it right away
 
-[Let's play!](/play)
+[Let's play!](play/)
